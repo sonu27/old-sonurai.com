@@ -4,7 +4,6 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\BingWallpaper as Wallpaper;
 use AppBundle\Entity\BingWallpaperRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
 class BingWallpaper
@@ -20,7 +19,7 @@ class BingWallpaper
         EntityRepository $marketRepo
     ) {
         $this->wallpaperRepo = $wallpaperRepo;
-        $this->marketRepo = $marketRepo;
+        $this->marketRepo    = $marketRepo;
     }
 
     public function updateWallpapers($path)
@@ -72,6 +71,40 @@ class BingWallpaper
         return $saved;
     }
 
+    private function getAllTitles()
+    {
+        return $this->getNames($this->wallpaperRepo->findAll());
+    }
+
+    private function getNames(array $wallpapers)
+    {
+        $names = [];
+        foreach ($wallpapers as $wallpaper) {
+            $names[] = $this->cleanTitle($wallpaper->getName());
+        }
+
+        return $names;
+    }
+
+    private function cleanTitle($url)
+    {
+        $name = $this->getNameFromUrlBase($url);
+        $name = explode('_', $name);
+        $name = trim($name[0]);
+
+        return $name;
+    }
+
+    public function getNameFromUrlBase($url)
+    {
+        return str_replace('/az/hprichbg/rb/', '', $url);
+    }
+
+    private function getAllChinaTitles()
+    {
+        return $this->getNames($this->wallpaperRepo->findByMarket('zh-cn'));
+    }
+
     public function getImages($market)
     {
         $xmlUrl = self::BING_URL.'/HPImageArchive.aspx?format=xml&idx=0&n=10&mkt='.$market;
@@ -86,6 +119,29 @@ class BingWallpaper
         }
 
         return array_reverse($images);
+    }
+
+    private function imagesExist($image)
+    {
+        $bothExist = false;
+        $fullImage = $this->getFullUrl($image);
+        $thumbnail = $this->getThumbnailUrl($image);
+
+        if ($this->fileExist($fullImage) && $this->fileExist($thumbnail)) {
+            $bothExist = true;
+        }
+
+        return $bothExist;
+    }
+
+    private function getFullUrl($image)
+    {
+        return self::BING_URL.$image->urlBase.'_1920x1200.jpg';
+    }
+
+    private function getThumbnailUrl($image)
+    {
+        return self::BING_URL.$image->url;
     }
 
     public function fileExist($url)
@@ -115,40 +171,6 @@ class BingWallpaper
         return $fileExists;
     }
 
-    public function getNameFromUrlBase($url)
-    {
-        return str_replace('/az/hprichbg/rb/', '', $url);
-    }
-
-    private function cleanTitle($url)
-    {
-        $name = $this->getNameFromUrlBase($url);
-        $name = explode('_', $name);
-        $name = trim($name[0]);
-
-        return $name;
-    }
-
-    private function getAllTitles()
-    {
-        return $this->getNames($this->wallpaperRepo->findAll());
-    }
-
-    private function getAllChinaTitles()
-    {
-        return $this->getNames($this->wallpaperRepo->findByMarket('zh-cn'));
-    }
-
-    private function getNames(array $wallpapers)
-    {
-        $names = [];
-        foreach ($wallpapers as $wallpaper) {
-            $names[] = $this->cleanTitle($wallpaper->getName());
-        }
-
-        return $names;
-    }
-
     private function getChina($name)
     {
         $chinaWallpapers = $this->wallpaperRepo->findByNameAndMarket($name, self::CHINA_MARKET);
@@ -161,47 +183,6 @@ class BingWallpaper
         }
 
         return false;
-    }
-
-    private function wallpaperInDb($name)
-    {
-        $query = $this->wallpaperRepo->createQueryBuilder('i')
-            ->where('i.name LIKE :name')
-            ->setParameter('name', $name.'%')
-            ->getQuery();
-
-        $image = $query->getResult();
-
-        if (!$image) {
-            $inDb = false;
-        } else {
-            $inDb = true;
-        }
-
-        return $inDb;
-    }
-
-    private function imagesExist($image)
-    {
-        $bothExist = false;
-        $fullImage = $this->getFullUrl($image);
-        $thumbnail = $this->getThumbnailUrl($image);
-
-        if ($this->fileExist($fullImage) && $this->fileExist($thumbnail)) {
-            $bothExist = true;
-        }
-
-        return $bothExist;
-    }
-
-    private function getFullUrl($image)
-    {
-        return self::BING_URL.$image->urlBase.'_1920x1200.jpg';
-    }
-
-    private function getThumbnailUrl($image)
-    {
-        return self::BING_URL.$image->url;
     }
 
     private function saveWallpaper($market, $image, $wallpaper = false)
