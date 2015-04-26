@@ -1,6 +1,9 @@
-sonurai.com
-===========
-- Install instructions after clone
+# sonurai.com
+
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/sonu27/sonurai.com/master.svg)](https://scrutinizer-ci.com/g/sonu27/sonurai.com/?branch=master)
+![License](https://img.shields.io/badge/license-MIT-blue.svg "MIT licence")
+
+### Install instructions after clone
 ```
 HTTPDUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1`
 chown "$HTTPDUSER":"$HTTPDUSER" app/cache app/logs -R
