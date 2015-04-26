@@ -60,5 +60,4 @@ class Pagination
 
         return $pagination;
     }
-
 }
