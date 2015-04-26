@@ -14,21 +14,17 @@ class BingWallpaper
 
     private $wallpaperRepo;
     private $marketRepo;
-    private $em;
 
     public function __construct(
         BingWallpaperRepository $wallpaperRepo,
-        EntityRepository $marketRepo,
-        EntityManagerInterface $em
+        EntityRepository $marketRepo
     ) {
         $this->wallpaperRepo = $wallpaperRepo;
         $this->marketRepo = $marketRepo;
-        $this->em = $em;
     }
 
     public function updateWallpapers($path)
     {
-        //$path = '/www/live/src/AR/WallpaperBundle/Resources/public/img/';
         $saved   = [];
         $markets = $this->marketRepo->findAll();
 
@@ -40,8 +36,8 @@ class BingWallpaper
             foreach ($images as $image) {
                 $cleanTitle = $this->cleanTitle($image->urlBase);
                 $cleanName  = $this->getNameFromUrlBase($image->urlBase);
-                $fullImage  = $path.'bingwallpaper/'.$cleanName.'.jpg';
-                $thumbnail  = $path.'bingwallpaper/'.$cleanName.'_th.jpg';
+                $fullImage  = $path.$cleanName.'.jpg';
+                $thumbnail  = $path.$cleanName.'_th.jpg';
 
                 if (// It's not a china wallpaper but exists in the db as a china wallpaper
                     $market != 'zh-cn'
