@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * BingWallpaper
  *
  * @ORM\Table(name="bing_wallpaper")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\BingWallpaperRepository")
  */
 class BingWallpaper
 {
