@@ -1,7 +1,8 @@
 # sonurai.com
 
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/sonu27/sonurai.com/master.svg)](https://scrutinizer-ci.com/g/sonu27/sonurai.com/?branch=master)
-![License](https://img.shields.io/badge/license-MIT-blue.svg "MIT licence")
+[![Codacy Badge](https://www.codacy.com/project/badge/4214eeec857145c7b9e6f9c9df9f2e60)](https://www.codacy.com/app/sonu27/sonurai-com)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sonu27/sonurai.com/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sonu27/sonurai.com/?branch=master)
+![License](https://img.shields.io/github/license/sonu27/sonurai.com.svg)
 
 ### Install instructions after clone
 ```
