@@ -6,6 +6,11 @@ use Doctrine\ORM\EntityRepository;
 
 class BingWallpaperRepository extends EntityRepository
 {
+    public function findByMarket($market)
+    {
+        return $this->findBy(['market' => $market]);
+    }
+
     public function findByNameAndMarket($name, $market)
     {
         return $this->createQueryBuilder('w')
