@@ -37,15 +37,15 @@ class Pagination
         if ($page > 1) {
             $pagination[] = [
                 'page'  => '&laquo;',
-                'url'   => $this->router->generate($routeName, array('page' => $page - 1)),
+                'url'   => $this->router->generate($routeName, ['page' => $page - 1]),
                 'class' => false,
             ];
         }
 
         for ($i = $start; $i <= $end; $i++) {
             $pagination[] = [
-                'page'   => $i,
-                'url'    => $this->router->generate($routeName, array('page' => $i)),
+                'page'  => $i,
+                'url'   => $this->router->generate($routeName, ['page' => $i]),
                 'class' => ($i == $page) ? 'active' : false,
             ];
         }
@@ -53,7 +53,7 @@ class Pagination
         if ($page != $pageCount) {
             $pagination[] = [
                 'page'  => '&raquo;',
-                'url'   => ($page < $pageCount ? $this->router->generate($routeName, array('page' => $page + 1)) : '#'),
+                'url'   => ($page < $pageCount ? $this->router->generate($routeName, ['page' => $page + 1]) : '#'),
                 'class' => false,
             ];
         }

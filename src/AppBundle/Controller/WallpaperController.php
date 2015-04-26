@@ -22,25 +22,25 @@ class WallpaperController extends Controller
     public function indexAction($page = 1, $limit = 25)
     {
         $offset = ($page * $limit) - $limit;
-        $em    = $this->getDoctrine()->getManager();
-        $query = $em
+        $em     = $this->getDoctrine()->getManager();
+        $query  = $em
             ->createQuery('SELECT i FROM AppBundle:BingWallpaper i ORDER BY i.date DESC')
             ->setFirstResult($offset)
             ->setMaxResults($limit);
 
-        $wallpapers  = new Paginator($query, false);
+        $wallpapers = new Paginator($query, false);
 
         if (count($wallpapers) === 0) {
             throw $this->createNotFoundException('No images found');
         }
 
-        $paginator = $this->get('app.pagination');
+        $paginator  = $this->get('app.pagination');
         $pagination = $paginator->paginate($wallpapers, 'wallpaper_page', $page, $limit);
 
         return $this->render('wallpaper/index.html.twig', [
-            'page' => $page,
+            'page'       => $page,
             'pagination' => $pagination,
-            'path' => self::PATH,
+            'path'       => self::PATH,
             'wallpapers' => $wallpapers,
         ]);
     }
@@ -54,8 +54,8 @@ class WallpaperController extends Controller
         $date = new \DateTime($wallpaper->getDate());
 
         return $this->render('wallpaper/show.html.twig', [
-            'date' => $date,
-            'path' => self::PATH,
+            'date'      => $date,
+            'path'      => self::PATH,
             'wallpaper' => $wallpaper,
         ]);
     }
