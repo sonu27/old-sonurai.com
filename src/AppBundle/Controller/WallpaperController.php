@@ -6,13 +6,14 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/bingwallpapers")
  */
 class WallpaperController extends Controller
 {
-    const PATH = '//sonurai.com/bundles/arwallpaper/img/bingwallpaper/';
+    const PATH = '/wallpaper/';
 
     /**
      * @Route("", name="wallpaper_index")
@@ -28,7 +29,12 @@ class WallpaperController extends Controller
             ->setMaxResults($limit);
 
         $wallpapers  = new Paginator($query, false);
-        $paginator = $this->get('pagination');
+
+        if (count($wallpapers) === 0) {
+            throw $this->createNotFoundException('No images found');
+        }
+
+        $paginator = $this->get('app.pagination');
         $pagination = $paginator->paginate($wallpapers, 'wallpaper_page', $page, $limit);
 
         return $this->render('wallpaper/index.html.twig', [
@@ -52,5 +58,21 @@ class WallpaperController extends Controller
             'path' => self::PATH,
             'wallpaper' => $wallpaper,
         ]);
+    }
+
+    /**
+     * @Route("/update", name="wallpaper_update")
+     */
+    public function updateWallpapersAction()
+    {
+        $path            = $this->get('kernel')->getBundle('AppBundle')->getPath().'/Resources/public/wallpaper/';
+        $wallpaperHelper = $this->get('app.bing_wallpaper');
+        $result          = $wallpaperHelper->updateWallpapers($path);
+
+        if (empty($result)) {
+            return new Response('No Wallpapers Added');
+        } else {
+            return new Response(count($result).' Wallpaper(s) Added - '.implode(", ", $result));
+        }
     }
 }
