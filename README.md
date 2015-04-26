@@ -10,5 +10,7 @@ chown "$HTTPDUSER":"$HTTPDUSER" app/cache app/logs -R
 setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX app/cache app/logs
 setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX app/cache app/logs
 chown "$HTTPDUSER":"$HTTPDUSER" src/AppBundle/Resources/public/wallpaper -R
-composer install
+composer install --prefer-dist -o
+php app/console cache:clear --env=prod --no-debug
+php app/console assetic:dump --env=prod --no-debug
 ```
