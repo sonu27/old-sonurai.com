@@ -11,7 +11,7 @@ class BingWallpaper
 {
     const CHINA_MARKET = 'zh-cn';
     const BING_URL = 'http://www.bing.com';
-    
+
     private $wallpaperRepo;
     private $marketRepo;
     private $em;
@@ -39,7 +39,7 @@ class BingWallpaper
             $images          = $this->getImages($market);
             foreach ($images as $image) {
                 $cleanTitle = $this->cleanTitle($image->urlBase);
-                $cleanName  = $this->cleanName($image->urlBase);
+                $cleanName  = $this->getNameFromUrlBase($image->urlBase);
                 $fullImage  = $path.'bingwallpaper/'.$cleanName.'.jpg';
                 $thumbnail  = $path.'bingwallpaper/'.$cleanName.'_th.jpg';
 
@@ -119,14 +119,14 @@ class BingWallpaper
         return $fileExists;
     }
 
-    public function cleanName($url)
+    public function getNameFromUrlBase($url)
     {
         return str_replace('/az/hprichbg/rb/', '', $url);
     }
 
     private function cleanTitle($url)
     {
-        $name = $this->cleanName($url);
+        $name = $this->getNameFromUrlBase($url);
         $name = explode('_', $name);
         $name = trim($name[0]);
 
@@ -135,28 +135,22 @@ class BingWallpaper
 
     private function getAllTitles()
     {
-        $images = $this->wallpaperRepo->findAll();
-
-        $title = [];
-        foreach ($images as $image) {
-            $name    = $this->cleanTitle($image->getName());
-            $title[] = $name;
-        }
-
-        return $title;
+        return $this->getNames($this->wallpaperRepo->findAll());
     }
 
     private function getAllChinaTitles()
     {
-        $images = $this->wallpaperRepo->findByMarket('zh-cn');
+        return $this->getNames($this->wallpaperRepo->findByMarket('zh-cn'));
+    }
 
-        $title = [];
-        foreach ($images as $image) {
-            $name    = $this->cleanTitle($image->getName());
-            $title[] = $name;
+    private function getNames(array $wallpapers)
+    {
+        $names = [];
+        foreach ($wallpapers as $wallpaper) {
+            $names[] = $this->cleanTitle($wallpaper->getName());
         }
 
-        return $title;
+        return $names;
     }
 
     private function getChina($name)
@@ -222,7 +216,7 @@ class BingWallpaper
 
         $wallpaper->setMarket($market);
         $wallpaper->setDate($image->startdate);
-        $wallpaper->setName($this->cleanName($image->urlBase));
+        $wallpaper->setName($this->getNameFromUrlBase($image->urlBase));
         $wallpaper->setDescription($image->copyright);
 
         $this->wallpaperRepo->save($wallpaper);
