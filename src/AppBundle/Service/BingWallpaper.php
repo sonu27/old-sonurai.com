@@ -6,8 +6,8 @@ use AppBundle\Entity\BingWallpaper as Wallpaper;
 
 class BingWallpaper
 {
-    protected $doctrine;
-    protected $bingUrl = 'http://www.bing.com';
+    private $doctrine;
+    private $bingUrl = 'http://www.bing.com';
 
     public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
     {
@@ -112,7 +112,7 @@ class BingWallpaper
         return str_replace('/az/hprichbg/rb/', '', $url);
     }
 
-    protected function cleanTitle($url)
+    private function cleanTitle($url)
     {
         $name = $this->cleanUpName($url);
         $name = explode('_', $name);
@@ -121,7 +121,7 @@ class BingWallpaper
         return $name;
     }
 
-    protected function getAllTitles()
+    private function getAllTitles()
     {
         $repo   = $this->doctrine->getRepository('ARWallpaperBundle:BingWallpaper');
         $images = $repo->findAll();
@@ -135,7 +135,7 @@ class BingWallpaper
         return $title;
     }
 
-    protected function getAllChinaTitles()
+    private function getAllChinaTitles()
     {
         $repo   = $this->doctrine->getRepository('ARWallpaperBundle:BingWallpaper');
         $images = $repo->findByMarket('zh-cn');
@@ -149,7 +149,7 @@ class BingWallpaper
         return $title;
     }
 
-    protected function getChina($name)
+    private function getChina($name)
     {
         $query = $this->doctrine->getRepository('ARWallpaperBundle:BingWallpaper')->createQueryBuilder('i')
             ->where('i.name LIKE :name')
@@ -169,7 +169,7 @@ class BingWallpaper
         return false;
     }
 
-    protected function wallpaperInDb($name)
+    private function wallpaperInDb($name)
     {
         $query = $this->doctrine->getRepository('ARWallpaperBundle:BingWallpaper')->createQueryBuilder('i')
             ->where('i.name LIKE :name')
@@ -187,7 +187,7 @@ class BingWallpaper
         return $inDb;
     }
 
-    protected function imagesExist($image)
+    private function imagesExist($image)
     {
         $bothExist = false;
         $fullImage = $this->getFullUrl($image);
@@ -200,17 +200,17 @@ class BingWallpaper
         return $bothExist;
     }
 
-    protected function getFullUrl($image)
+    private function getFullUrl($image)
     {
         return $this->bingUrl.$image->urlBase.'_1920x1200.jpg';
     }
 
-    protected function getThumbnailUrl($image)
+    private function getThumbnailUrl($image)
     {
         return $this->bingUrl.$image->url;
     }
 
-    protected function saveWallpaper($market, $image, $wallpaper = false)
+    private function saveWallpaper($market, $image, $wallpaper = false)
     {
         if (false === $wallpaper) {
             $wallpaper = new Wallpaper();
@@ -228,7 +228,7 @@ class BingWallpaper
         return $wallpaper;
     }
 
-    protected function copyImage($source, $destination)
+    private function copyImage($source, $destination)
     {
         try {
             copy($source, $destination);
