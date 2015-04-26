@@ -21,68 +21,15 @@ class WallpaperController extends Controller
     public function indexAction($page = 1, $limit = 25)
     {
         $offset = ($page * $limit) - $limit;
-
         $em    = $this->getDoctrine()->getManager();
         $query = $em
             ->createQuery('SELECT i FROM AppBundle:BingWallpaper i ORDER BY i.date DESC')
             ->setFirstResult($offset)
             ->setMaxResults($limit);
 
-        $paginator  = new Paginator($query, false);
-        $itemCount = count($paginator);
-        $pageCount = ceil($itemCount / $limit);
-
-        $images = [];
-        foreach ($paginator as $image) {
-            $images[] = $image;
-        }
-
-        if (empty($images)) {
-            throw $this->createNotFoundException('No images!');
-        }
-
-        $padding    = 4;
-        $pagination = [];
-        $start      = $page - $padding;
-        $end        = $page + $padding;
-
-        if ($start < 1) {
-            $end -= $start - 1;
-            $start = 1;
-        }
-
-        if ($end > $pageCount) {
-            $end = $pageCount;
-            for (null; ($start > 1) && (($end - $start) <= 3); $start--) {
-                ;
-            }
-        }
-
-        if ($page > 1) {
-            $pagination[] = [
-                'page'  => '&laquo;',
-                'url'   => $this->generateUrl('wallpaper_page', array('page' => $page - 1)),
-                'class' => false,
-            ];
-        }
-
-        for ($i = $start; $i <= $end; $i++) {
-            $pagination[] = [
-                'page'   => $i,
-                'url'    => $this->generateUrl('wallpaper_page', array('page' => $i)),
-                'class' => ($i == $page) ? 'active' : false,
-            ];
-        }
-
-        if ($page != $pageCount) {
-            $pagination[] = [
-                'page'  => '&raquo;',
-                'url'   => ($page < $pageCount ? $this->generateUrl('wallpaper_page', array('page' => $page + 1)) : '#'),
-                'class' => false,
-            ];
-        }
-
-        $wallpapers = $query->getResult();
+        $wallpapers  = new Paginator($query, false);
+        $paginator = $this->get('pagination');
+        $pagination = $paginator->paginate($wallpapers, 'wallpaper_page', $page, $limit);
 
         return $this->render('wallpaper/index.html.twig', [
             'page' => $page,
