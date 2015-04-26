@@ -210,7 +210,7 @@ class BingWallpaper
 
     private function saveWallpaper($market, $image, $wallpaper = false)
     {
-        if (false === $wallpaper) {
+        if (!($wallpaper instanceof Wallpaper)) {
             $wallpaper = new Wallpaper();
         }
 
