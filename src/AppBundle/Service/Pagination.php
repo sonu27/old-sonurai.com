@@ -18,7 +18,6 @@ class Pagination
         $itemCount = count($items);
         $pageCount = ceil($itemCount / $limit);
 
-        $padding    = 4;
         $pagination = [];
         $start      = $page - $padding;
         $end        = $page + $padding;
