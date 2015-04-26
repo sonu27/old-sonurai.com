@@ -1,24 +1,36 @@
 <?php
 
-namespace AppBundle\Classes;
+namespace AppBundle\Service;
 
 use AppBundle\Entity\BingWallpaper as Wallpaper;
+use AppBundle\Entity\BingWallpaperRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 
 class BingWallpaper
 {
-    private $doctrine;
-    private $bingUrl = 'http://www.bing.com';
+    const CHINA_MARKET = 'zh-cn';
+    const BING_URL = 'http://www.bing.com';
+    
+    private $wallpaperRepo;
+    private $marketRepo;
+    private $em;
 
-    public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
-    {
-        $this->doctrine = $doctrine;
+    public function __construct(
+        BingWallpaperRepository $wallpaperRepo,
+        EntityRepository $marketRepo,
+        EntityManagerInterface $em
+    ) {
+        $this->wallpaperRepo = $wallpaperRepo;
+        $this->marketRepo = $marketRepo;
+        $this->em = $em;
     }
 
     public function updateWallpapers($path)
     {
-        $markets = $this->doctrine->getRepository('ARWallpaperBundle:BingMarket')->findAll();
-        $saved   = [];
         //$path = '/www/live/src/AR/WallpaperBundle/Resources/public/img/';
+        $saved   = [];
+        $markets = $this->marketRepo->findAll();
 
         foreach ($markets as $market) {
             $titles          = $this->getAllTitles();
@@ -27,7 +39,7 @@ class BingWallpaper
             $images          = $this->getImages($market);
             foreach ($images as $image) {
                 $cleanTitle = $this->cleanTitle($image->urlBase);
-                $cleanName  = $this->cleanUpName($image->urlBase);
+                $cleanName  = $this->cleanName($image->urlBase);
                 $fullImage  = $path.'bingwallpaper/'.$cleanName.'.jpg';
                 $thumbnail  = $path.'bingwallpaper/'.$cleanName.'_th.jpg';
 
@@ -66,7 +78,7 @@ class BingWallpaper
 
     public function getImages($market)
     {
-        $xmlUrl = $this->bingUrl.'/HPImageArchive.aspx?format=xml&idx=0&n=10&mkt='.$market;
+        $xmlUrl = self::BING_URL.'/HPImageArchive.aspx?format=xml&idx=0&n=10&mkt='.$market;
 
         $xml = simplexml_load_file($xmlUrl);
 
@@ -107,14 +119,14 @@ class BingWallpaper
         return $fileExists;
     }
 
-    public function cleanUpName($url)
+    public function cleanName($url)
     {
         return str_replace('/az/hprichbg/rb/', '', $url);
     }
 
     private function cleanTitle($url)
     {
-        $name = $this->cleanUpName($url);
+        $name = $this->cleanName($url);
         $name = explode('_', $name);
         $name = trim($name[0]);
 
@@ -123,8 +135,7 @@ class BingWallpaper
 
     private function getAllTitles()
     {
-        $repo   = $this->doctrine->getRepository('ARWallpaperBundle:BingWallpaper');
-        $images = $repo->findAll();
+        $images = $this->wallpaperRepo->findAll();
 
         $title = [];
         foreach ($images as $image) {
@@ -137,8 +148,7 @@ class BingWallpaper
 
     private function getAllChinaTitles()
     {
-        $repo   = $this->doctrine->getRepository('ARWallpaperBundle:BingWallpaper');
-        $images = $repo->findByMarket('zh-cn');
+        $images = $this->wallpaperRepo->findByMarket('zh-cn');
 
         $title = [];
         foreach ($images as $image) {
@@ -151,13 +161,7 @@ class BingWallpaper
 
     private function getChina($name)
     {
-        $query = $this->doctrine->getRepository('ARWallpaperBundle:BingWallpaper')->createQueryBuilder('i')
-            ->where('i.name LIKE :name')
-            ->andWhere("i.market = 'zh-cn'")
-            ->setParameter('name', $name.'%')
-            ->getQuery();
-
-        $chinaWallpapers = $query->getResult();
+        $chinaWallpapers = $this->wallpaperRepo->findByNameAndMarket($name, self::CHINA_MARKET);
 
         foreach ($chinaWallpapers as $chinaWallpaper) {
             $cleanTitle = $this->cleanTitle($chinaWallpaper->getName());
@@ -171,7 +175,7 @@ class BingWallpaper
 
     private function wallpaperInDb($name)
     {
-        $query = $this->doctrine->getRepository('ARWallpaperBundle:BingWallpaper')->createQueryBuilder('i')
+        $query = $this->wallpaperRepo->createQueryBuilder('i')
             ->where('i.name LIKE :name')
             ->setParameter('name', $name.'%')
             ->getQuery();
@@ -202,12 +206,12 @@ class BingWallpaper
 
     private function getFullUrl($image)
     {
-        return $this->bingUrl.$image->urlBase.'_1920x1200.jpg';
+        return self::BING_URL.$image->urlBase.'_1920x1200.jpg';
     }
 
     private function getThumbnailUrl($image)
     {
-        return $this->bingUrl.$image->url;
+        return self::BING_URL.$image->url;
     }
 
     private function saveWallpaper($market, $image, $wallpaper = false)
@@ -218,27 +222,11 @@ class BingWallpaper
 
         $wallpaper->setMarket($market);
         $wallpaper->setDate($image->startdate);
-        $wallpaper->setName($this->cleanUpName($image->urlBase));
+        $wallpaper->setName($this->cleanName($image->urlBase));
         $wallpaper->setDescription($image->copyright);
 
-        $em = $this->doctrine->getManager();
-        $em->persist($wallpaper);
-        $em->flush();
+        $this->wallpaperRepo->save($wallpaper);
 
         return $wallpaper;
-    }
-
-    private function copyImage($source, $destination)
-    {
-        try {
-            copy($source, $destination);
-        } catch (\ErrorException $e) {
-            echo 'Failed to copy...'.PHP_EOL;
-            echo $e->getTraceAsString();
-
-            return false;
-        }
-
-        return true;
     }
 }
