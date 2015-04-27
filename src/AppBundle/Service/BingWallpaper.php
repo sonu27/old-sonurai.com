@@ -71,6 +71,15 @@ class BingWallpaper
         return $saved;
     }
 
+    public function cleanTitle($url)
+    {
+        $name = $this->getNameFromUrlBase($url);
+        $name = explode('_', $name);
+        $name = trim($name[0]);
+
+        return $name;
+    }
+
     private function getAllTitles()
     {
         return $this->getNames($this->wallpaperRepo->findAll());
@@ -84,15 +93,6 @@ class BingWallpaper
         }
 
         return $names;
-    }
-
-    private function cleanTitle($url)
-    {
-        $name = $this->getNameFromUrlBase($url);
-        $name = explode('_', $name);
-        $name = trim($name[0]);
-
-        return $name;
     }
 
     public function getNameFromUrlBase($url)
