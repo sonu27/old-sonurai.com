@@ -32,11 +32,15 @@ class BingWallpaperRepository extends EntityRepository
 
     public function findOneLikeName($name)
     {
-        return $this->createQueryBuilder('w')
+        $result = $this->createQueryBuilder('w')
             ->where('w.name LIKE :name')
             ->setParameter('name', $name.'%')
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
+
+        if (!empty($result)) {
+            return $result[0];
+        }
     }
 
     public function findByNameAndMarket($name, $market)
