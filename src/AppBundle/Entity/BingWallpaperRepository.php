@@ -6,6 +6,23 @@ use Doctrine\ORM\EntityRepository;
 
 class BingWallpaperRepository extends EntityRepository
 {
+    public function countAll()
+    {
+        return $this->createQueryBuilder('w')
+            ->select('count(w.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function get($offset = 0, $limit = 10)
+    {
+        return $this->createQueryBuilder('w')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findByMarket($market)
     {
         return $this->findBy(['market' => $market]);

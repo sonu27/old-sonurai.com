@@ -22,12 +22,6 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
 
     public function testArrayOutput1()
     {
-        $items = [
-            ['id' => 1],
-            ['id' => 2],
-            ['id' => 3],
-        ];
-
         $expected   = [
             [
                 'page'  => 1,
@@ -46,7 +40,7 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $pagination = $this->obj->paginate($items, $this->routeName, 1, 2);
+        $pagination = $this->obj->paginate(3, $this->routeName, 1, 2);
 
         $this->assertEquals($expected, $pagination);
     }
