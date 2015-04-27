@@ -7,7 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * BingWallpaper
  *
- * @ORM\Table(name="bing_wallpaper")
+ * @ORM\Table(name="bing_wallpaper",
+ *            indexes={@ORM\Index(name="index_all", columns={"date", "name", "description", "market"})})
  * @ORM\Entity(repositoryClass="AppBundle\Entity\BingWallpaperRepository")
  */
 class BingWallpaper
