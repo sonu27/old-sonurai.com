@@ -20,6 +20,7 @@ class BingWallpaperRepository extends EntityRepository
             ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->orderBy('w.date', 'DESC')
+            ->addOrderBy('w.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
