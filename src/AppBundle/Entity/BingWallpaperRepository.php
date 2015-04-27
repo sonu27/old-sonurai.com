@@ -19,6 +19,7 @@ class BingWallpaperRepository extends EntityRepository
         return $this->createQueryBuilder('w')
             ->setFirstResult($offset)
             ->setMaxResults($limit)
+            ->orderBy('w.date', 'DESC')
             ->getQuery()
             ->getResult();
     }
