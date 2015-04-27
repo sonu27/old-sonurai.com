@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,21 +20,18 @@ class WallpaperController extends Controller
      */
     public function indexAction($page = 1, $limit = 25)
     {
+        $wallpaperRepo = $this->get('app.bing_wallpaper_repository');
+
         $offset = ($page * $limit) - $limit;
-        $em     = $this->getDoctrine()->getManager();
-        $query  = $em
-            ->createQuery('SELECT i FROM AppBundle:BingWallpaper i ORDER BY i.date DESC')
-            ->setFirstResult($offset)
-            ->setMaxResults($limit);
+        $wallpapers = $wallpaperRepo->get($offset, $limit);
+        $count = $wallpaperRepo->countAll();
 
-        $wallpapers = new Paginator($query, false);
-
-        if (count($wallpapers) === 0) {
-            throw $this->createNotFoundException('No images found');
+        if ($count === 0) {
+            throw $this->createNotFoundException('No wallpapers found');
         }
 
         $paginator  = $this->get('app.pagination');
-        $pagination = $paginator->paginate($wallpapers, 'wallpaper_page', $page, $limit);
+        $pagination = $paginator->paginate($count, 'wallpaper_page', $page, $limit);
 
         return $this->render('wallpaper/index.html.twig', [
             'page'       => $page,

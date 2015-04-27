@@ -9,7 +9,7 @@
     <service id="app.bing_market_repository" class="Doctrine\ORM\EntityRepository" factory-method="getRepository" factory-service="doctrine.orm.entity_manager" public="false">
       <argument>AppBundle\Entity\BingMarket</argument>
     </service>
-    <service id="app.bing_wallpaper_repository" class="Doctrine\ORM\EntityRepository" factory-method="getRepository" factory-service="doctrine.orm.entity_manager" public="false">
+    <service id="app.bing_wallpaper_repository" class="Doctrine\ORM\EntityRepository" factory-method="getRepository" factory-service="doctrine.orm.entity_manager">
       <argument>AppBundle\Entity\BingWallpaper</argument>
     </service>
     <service id="app.pagination" class="AppBundle\Service\Pagination">

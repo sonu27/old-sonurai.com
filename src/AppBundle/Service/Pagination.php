@@ -13,10 +13,9 @@ class Pagination
         $this->router = $router;
     }
 
-    public function paginate($items, $routeName, $page, $limit, $padding = 4)
+    public function paginate($count, $routeName, $page, $limit, $padding = 4)
     {
-        $itemCount = count($items);
-        $pageCount = ceil($itemCount / $limit);
+        $pageCount = ceil($count / $limit);
 
         $pagination = [];
         $start      = $page - $padding;
@@ -29,8 +28,9 @@ class Pagination
 
         if ($end > $pageCount) {
             $end = $pageCount;
-            for (null; ($start > 1) && (($end - $start) <= 3); $start--) {
-                ;
+
+            while (($start > 1) && (($end - $start) <= 3)) {
+                $start--;
             }
         }
 
