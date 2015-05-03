@@ -7,12 +7,12 @@
 
 ### Install instructions after clone
 ```
-HTTPDUSER=`ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1`
-chown "$HTTPDUSER":"$HTTPDUSER" app/cache app/logs -R
+HTTPDUSER=$(grep -E ^'apache|httpd|[_]www|www-data|nginx' /etc/passwd | cut -d":" -f1)
+chown "$HTTPDUSER":"$HTTPDUSER" app/cache app/logs src/AppBundle/Resources/public/wallpaper -R
 setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX app/cache app/logs
 setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX app/cache app/logs
-chown "$HTTPDUSER":"$HTTPDUSER" src/AppBundle/Resources/public/wallpaper -R
 composer install --prefer-dist -o
 php app/console cache:clear --env=prod --no-debug
 php app/console assetic:dump --env=prod --no-debug
+ln -s ../src/AppBundle/Resources/public/wallpaper web/wallpaper
 ```
