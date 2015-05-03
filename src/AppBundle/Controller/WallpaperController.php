@@ -18,7 +18,7 @@ class WallpaperController extends Controller
      * @Route("", name="wallpaper_index")
      * @Route("/page/{page}", requirements={"id" = "\d+"}, name="wallpaper_page")
      */
-    public function indexAction($page = 1, $limit = 25)
+    public function indexAction($page = 1, $limit = 10)
     {
         $wallpaperRepo = $this->get('app.bing_wallpaper_repository');
 
