@@ -26,7 +26,7 @@ class WallpaperController extends Controller
         $wallpapers = $wallpaperRepo->get($offset, $limit);
         $count = $wallpaperRepo->countAll();
 
-        if ($count === 0) {
+        if (count($wallpapers) === 0) {
             throw $this->createNotFoundException('No wallpapers found');
         }
 
