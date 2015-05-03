@@ -44,4 +44,11 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $pagination);
     }
+
+    public function testOutputIsNullWhenCountIsLessThanOne()
+    {
+        $pagination = $this->obj->paginate(0, $this->routeName, 1, 2);
+
+        $this->assertEquals([], $pagination);
+    }
 }

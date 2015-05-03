@@ -15,11 +15,15 @@ class Pagination
 
     public function paginate($count, $routeName, $page, $limit, $padding = 4)
     {
-        $pageCount = ceil($count / $limit);
-
         $pagination = [];
-        $start      = $page - $padding;
-        $end        = $page + $padding;
+
+        if ($count < 1) {
+            return $pagination;
+        }
+
+        $pageCount = (int) ceil($count / $limit);
+        $start     = $page - $padding;
+        $end       = $page + $padding;
 
         if ($start < 1) {
             $end -= $start - 1;
