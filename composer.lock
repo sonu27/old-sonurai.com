@@ -990,17 +990,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v3.0.21",
+            "version": "v3.0.22",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "da23c78093676a823a1ff43a214987ea3fbf83c8"
+                "reference": "0fe4ec86db57c232becb694e01cdabe3c4d9af7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/da23c78093676a823a1ff43a214987ea3fbf83c8",
-                "reference": "da23c78093676a823a1ff43a214987ea3fbf83c8",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/0fe4ec86db57c232becb694e01cdabe3c4d9af7c",
+                "reference": "0fe4ec86db57c232becb694e01cdabe3c4d9af7c",
                 "shasum": ""
             },
             "require": {
@@ -1046,7 +1046,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-04-10 06:20:46"
+            "time": "2015-05-02 16:23:08"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -1383,16 +1383,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.7.0-BETA1",
+            "version": "v2.7.0-BETA2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "07379d1d80594872bfbb7e9baad2cf7709c73102"
+                "reference": "5cfcce37fa070f7765559156634c9ef2724e9545"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/07379d1d80594872bfbb7e9baad2cf7709c73102",
-                "reference": "07379d1d80594872bfbb7e9baad2cf7709c73102",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/5cfcce37fa070f7765559156634c9ef2724e9545",
+                "reference": "5cfcce37fa070f7765559156634c9ef2724e9545",
                 "shasum": ""
             },
             "require": {
@@ -1456,7 +1456,6 @@
                 "ircmaxell/password-compat": "~1.0",
                 "monolog/monolog": "~1.11",
                 "ocramius/proxy-manager": "~0.4|~1.0",
-                "propel/propel1": "~1.6",
                 "symfony/phpunit-bridge": "self.version"
             },
             "type": "library",
@@ -1466,14 +1465,14 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Symfony\\Bridge\\Doctrine\\": "src/",
-                    "Symfony\\Bridge\\Monolog\\": "src/",
-                    "Symfony\\Bridge\\ProxyManager\\": "src/",
-                    "Symfony\\Bridge\\Swiftmailer\\": "src/",
-                    "Symfony\\Bridge\\Twig\\": "src/",
-                    "Symfony\\Bundle\\": "src/",
-                    "Symfony\\Component\\": "src/"
+                "psr-4": {
+                    "Symfony\\Bridge\\Doctrine\\": "src/Symfony/Bridge/Doctrine/",
+                    "Symfony\\Bridge\\Monolog\\": "src/Symfony/Bridge/Monolog/",
+                    "Symfony\\Bridge\\ProxyManager\\": "src/Symfony/Bridge/ProxyManager/",
+                    "Symfony\\Bridge\\Swiftmailer\\": "src/Symfony/Bridge/Swiftmailer/",
+                    "Symfony\\Bridge\\Twig\\": "src/Symfony/Bridge/Twig/",
+                    "Symfony\\Bundle\\": "src/Symfony/Bundle/",
+                    "Symfony\\Component\\": "src/Symfony/Component/"
                 },
                 "classmap": [
                     "src/Symfony/Component/HttpFoundation/Resources/stubs",
@@ -1489,20 +1488,20 @@
             ],
             "authors": [
                 {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                },
-                {
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
                 }
             ],
             "description": "The Symfony PHP framework",
-            "homepage": "http://symfony.com",
+            "homepage": "https://symfony.com",
             "keywords": [
                 "framework"
             ],
-            "time": "2015-04-10 19:52:02"
+            "time": "2015-05-13 20:25:22"
         },
         {
             "name": "twig/extensions",
@@ -1720,16 +1719,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.4.0",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "8724cd239f8ef4c046f55a3b18b4d91cc7f3e4c5"
+                "reference": "3132b1f44c7bf2ec4c7eb2d3cb78fdeca760d373"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/8724cd239f8ef4c046f55a3b18b4d91cc7f3e4c5",
-                "reference": "8724cd239f8ef4c046f55a3b18b4d91cc7f3e4c5",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/3132b1f44c7bf2ec4c7eb2d3cb78fdeca760d373",
+                "reference": "3132b1f44c7bf2ec4c7eb2d3cb78fdeca760d373",
                 "shasum": ""
             },
             "require": {
@@ -1776,7 +1775,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2015-03-27 19:31:25"
+            "time": "2015-04-27 22:15:08"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2026,16 +2025,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.6.4",
+            "version": "4.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "163232991e652e6efed2f8470326fffa61e848e2"
+                "reference": "3afe303d873a4d64c62ef84de491b97b006fbdac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/163232991e652e6efed2f8470326fffa61e848e2",
-                "reference": "163232991e652e6efed2f8470326fffa61e848e2",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3afe303d873a4d64c62ef84de491b97b006fbdac",
+                "reference": "3afe303d873a4d64c62ef84de491b97b006fbdac",
                 "shasum": ""
             },
             "require": {
@@ -2094,7 +2093,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-04-11 05:23:21"
+            "time": "2015-04-29 15:18:52"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
