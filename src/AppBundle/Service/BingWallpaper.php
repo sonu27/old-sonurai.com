@@ -39,7 +39,7 @@ class BingWallpaper
                 $thumbnail  = $path.$cleanName.'_th.jpg';
 
                 if (// It's not a china wallpaper but exists in the db as a china wallpaper
-                    $market != 'zh-cn'
+                    $market != self::CHINA_MARKET
                     && in_array($cleanTitle, $chinaWallpapers)
                     && $this->imagesExist($image)
                 ) {
