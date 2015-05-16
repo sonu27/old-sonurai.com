@@ -32,6 +32,7 @@ class BingWallpaper
             $chinaWallpapers = $this->getAllChinaTitles();
             $market          = $market->getName();
             $images          = $this->getImages($market);
+
             foreach ($images as $image) {
                 $cleanTitle = $this->cleanTitle($image->urlBase);
                 $cleanName  = $this->getNameFromUrlBase($image->urlBase);
