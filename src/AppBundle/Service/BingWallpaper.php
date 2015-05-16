@@ -35,8 +35,7 @@ class BingWallpaper
             foreach ($images as $image) {
                 $cleanTitle = $this->cleanTitle($image->urlBase);
                 $cleanName  = $this->getNameFromUrlBase($image->urlBase);
-                $fullImage  = $path.$cleanName.'.jpg';
-                $thumbnail  = $path.$cleanName.'_th.jpg';
+                $filename   = $path.$cleanName;
 
                 if (// It's not a china wallpaper but exists in the db as a china wallpaper
                     $market != self::CHINA_MARKET
@@ -45,10 +44,7 @@ class BingWallpaper
                 ) {
                     $chinaWallpaper = $this->getChina($cleanTitle);
                     if (false !== $chinaWallpaper) {
-                        $fullCopied      = copy($this->getFullUrl($image), $fullImage);
-                        $thumbnailCopied = copy($this->getThumbnailUrl($image), $thumbnail);
-
-                        if ($fullCopied && $thumbnailCopied) {
+                        if ($this->copyImages($image, $filename)) {
                             $this->saveWallpaper($market, $image, $chinaWallpaper);
                             $saved[] = $chinaWallpaper->getName().' - '.$chinaWallpaper->getMarket();
                         }
@@ -57,10 +53,7 @@ class BingWallpaper
                     !in_array($cleanTitle, $titles)
                     && $this->imagesExist($image)
                 ) {
-                    $fullCopied      = copy($this->getFullUrl($image), $fullImage);
-                    $thumbnailCopied = copy($this->getThumbnailUrl($image), $thumbnail);
-
-                    if ($fullCopied && $thumbnailCopied) {
+                    if ($this->copyImages($image, $filename)) {
                         $wallpaper = $this->saveWallpaper($market, $image);
                         $saved[]   = $wallpaper->getName().' - '.$wallpaper->getMarket();
                     }
@@ -78,6 +71,14 @@ class BingWallpaper
         $name = trim($name[0]);
 
         return $name;
+    }
+
+    private function copyImages($image, $path)
+    {
+        $fullCopied      = copy($this->getFullUrl($image), $path.'.jpg');
+        $thumbnailCopied = copy($this->getThumbnailUrl($image), $path.'_th.jpg');
+
+        return ($fullCopied && $thumbnailCopied);
     }
 
     private function getAllTitles()
