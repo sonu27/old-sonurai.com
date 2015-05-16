@@ -22,7 +22,7 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
 
     public function testArrayOutput1()
     {
-        $expected   = [
+        $expected = [
             [
                 'page'  => 1,
                 'url'   => '/fake-url',

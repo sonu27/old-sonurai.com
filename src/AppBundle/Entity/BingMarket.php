@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * BingMarket
  *
  * @ORM\Table(name="bing_market")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\BingMarketRepository")
  */
 class BingMarket
 {
