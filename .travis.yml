@@ -7,8 +7,13 @@ php:
 
 before_script: composer install -n
 
-script: bin/phpunit -c app --coverage-clover=coverage.clover
+script:
+ - bin/phpunit -c app --coverage-clover=coverage.clover
+ - mkdir -p build/logs
+ - cp coverage.clover clover.xml
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - wget https://github.com/codacy/php-codacy-coverage/raw/master/bin/phar/codacycoverage.phar
+  - php codacycoverage.phar clover
