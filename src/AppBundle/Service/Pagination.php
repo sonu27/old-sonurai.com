@@ -21,22 +21,16 @@ class Pagination
             return $pagination;
         }
 
-        $pageCount = (int) ceil($count / $limit);
-        $start     = $page - $padding;
-        $end       = $page + $padding;
+        $pageCount = (int)ceil($count / $limit);
 
-        if ($start < 1) {
-            $end -= $start - 1;
-            $start = 1;
+        if ($page > $pageCount) {
+            throw new \LogicException('Page cannot be more than page count');
         }
 
-        if ($end > $pageCount) {
-            $end = $pageCount;
-
-            while (($start > 1) && (($end - $start) <= 3)) {
-                $start--;
-            }
-        }
+        $pageMinusPadding = $page - $padding;
+        $pagePlusPadding  = $page + $padding;
+        $start            = ($pageMinusPadding < 1) ? 1 : $pageMinusPadding;
+        $end              = ($pagePlusPadding > $pageCount) ? $pageCount : $pagePlusPadding;
 
         if ($page > 1) {
             $pagination[] = [
