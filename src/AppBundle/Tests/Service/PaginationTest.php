@@ -20,6 +20,23 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
         $this->obj = new Pagination($routerProphecy->reveal());
     }
 
+    public function testOutputIsAnEmptyArrayWhenCountIsLessThanOne()
+    {
+        $pagination = $this->obj->paginate(0, $this->routeName, 1, 2);
+
+        $this->assertEquals([], $pagination);
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testLogicExceptionIsThrownWhenPageCannotExist()
+    {
+        $pagination = $this->obj->paginate(10, $this->routeName, 3, 5);
+
+        $this->assertEquals([], $pagination);
+    }
+
     public function testArrayOutput1()
     {
         $expected = [
@@ -45,10 +62,28 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $pagination);
     }
 
-    public function testOutputIsNullWhenCountIsLessThanOne()
+    public function testArrayOutputWhenPageIsMoreThanOne()
     {
-        $pagination = $this->obj->paginate(0, $this->routeName, 1, 2);
+        $expected = [
+            [
+                'page'  => '&laquo;',
+                'url'   => '/fake-url',
+                'class' => false,
+            ],
+            [
+                'page'  => 1,
+                'url'   => '/fake-url',
+                'class' => false,
+            ],
+            [
+                'page'  => 2,
+                'url'   => '/fake-url',
+                'class' => 'active',
+            ],
+        ];
 
-        $this->assertEquals([], $pagination);
+        $pagination = $this->obj->paginate(3, $this->routeName, 2, 2);
+
+        $this->assertEquals($expected, $pagination);
     }
 }
