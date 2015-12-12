@@ -13,6 +13,5 @@ setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/logs
 setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/logs
 composer install --prefer-dist -o
 php bin/console cache:clear --env=prod --no-debug
-php bin/console assetic:dump --env=prod --no-debug
 ln -s ../src/AppBundle/Resources/public/wallpaper web/wallpaper
 ```
