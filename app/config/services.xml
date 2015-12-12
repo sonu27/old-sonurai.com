@@ -6,10 +6,12 @@
       <argument type="service" id="app.bing_wallpaper_repository"/>
       <argument type="service" id="app.bing_market_repository"/>
     </service>
-    <service id="app.bing_market_repository" class="Doctrine\ORM\EntityRepository" factory-method="getRepository" factory-service="doctrine.orm.entity_manager" public="false">
+    <service id="app.bing_market_repository" class="Doctrine\ORM\EntityRepository" public="false">
+      <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
       <argument>AppBundle\Entity\BingMarket</argument>
     </service>
-    <service id="app.bing_wallpaper_repository" class="Doctrine\ORM\EntityRepository" factory-method="getRepository" factory-service="doctrine.orm.entity_manager">
+    <service id="app.bing_wallpaper_repository" class="Doctrine\ORM\EntityRepository">
+      <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
       <argument>AppBundle\Entity\BingWallpaper</argument>
     </service>
     <service id="app.pagination" class="AppBundle\Service\Pagination">
