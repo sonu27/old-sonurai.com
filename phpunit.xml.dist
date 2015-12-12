@@ -4,8 +4,12 @@
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
          backupGlobals="false"
          colors="true"
-         bootstrap="app/bootstrap.php.cache"
+         bootstrap="app/autoload.php"
 >
+    <php>
+        <ini name="error_reporting" value="-1" />
+    </php>
+
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
@@ -13,8 +17,8 @@
     </testsuites>
 
     <php>
-        <server name="KERNEL_DIR" value="app"/>
         <ini name="xdebug.max_nesting_level" value="500"/>
+        <server name="KERNEL_DIR" value="app/" />
     </php>
 
     <filter>
@@ -22,7 +26,8 @@
             <directory>src</directory>
             <exclude>
                 <directory>src/*Bundle/Resources</directory>
-                <directory>src/*Bundle/Tests</directory>
+                <directory>src/*/*Bundle/Resources</directory>
+                <directory>src/*/Bundle/*Bundle/Resources</directory>
             </exclude>
         </whitelist>
     </filter>
