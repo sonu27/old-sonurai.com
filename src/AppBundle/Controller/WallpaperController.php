@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -22,9 +23,9 @@ class WallpaperController extends Controller
     {
         $wallpaperRepo = $this->get('app.bing_wallpaper_repository');
 
-        $offset = ($page * $limit) - $limit;
+        $offset     = ($page * $limit) - $limit;
         $wallpapers = $wallpaperRepo->get($offset, $limit);
-        $count = $wallpaperRepo->countAll();
+        $count      = $wallpaperRepo->countAll();
 
         if (count($wallpapers) === 0) {
             throw $this->createNotFoundException('No wallpapers found');
@@ -53,6 +54,29 @@ class WallpaperController extends Controller
             'date'      => $date,
             'path'      => self::PATH,
             'wallpaper' => $wallpaper,
+        ]);
+    }
+
+    /**
+     * @Route("/search", name="wallpaper_search")
+     */
+    public function searchWallpaperAction(Request $request, $page = 1, $limit = 50)
+    {
+        $wallpaperRepo = $this->get('app.bing_wallpaper_repository');
+
+        $query      = $request->query->get('query');
+        $offset     = ($page * $limit) - $limit;
+        $wallpapers = $wallpaperRepo->searchDescription($query, $offset, $limit);
+
+        $paginator  = $this->get('app.pagination');
+        $pagination = $paginator->paginate(count($wallpapers), 'wallpaper_page', $page, $limit);
+
+        return $this->render('wallpaper/search.html.twig', [
+            'page'       => $page,
+            'pagination' => $pagination,
+            'path'       => self::PATH,
+            'wallpapers' => $wallpapers,
+            'query'      => $query,
         ]);
     }
 
