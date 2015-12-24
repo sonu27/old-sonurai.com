@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bing Wallpapers - Page {{ page }}{% endblock %}
+{% block title %}Bing Wallpapers - Search for {{ query }}{% endblock %}
 
 {% block body %}
     <header class="row">
@@ -9,10 +9,12 @@
     </header>
 
     <div class="search-col">
-        <form class="form-inline wallpaper-search-form" action="{{ path('wallpaper_search') }}" style="display: none;">
-            <input name="query" type="search" class="form-control" placeholder="Search wallpapers">
+        <form class="form-inline wallpaper-search-form" action="{{ path('wallpaper_search') }}">
+            <input name="query" type="search" value="{{ query }}" class="form-control" placeholder="Search wallpapers">
         </form>
     </div>
+
+    <p>Showing {{ wallpapers|length }} result(s) for "{{ query }}".</p>
 
     {% for wallpaper in wallpapers %}
         <article class="post">
