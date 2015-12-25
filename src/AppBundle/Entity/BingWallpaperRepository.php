@@ -36,6 +36,7 @@ class BingWallpaperRepository extends EntityRepository
             ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->where('w.description LIKE :description')
+            ->orderBy('w.date', 'DESC')
             ->setParameter('description', '%'.$query.'%')
             ->getQuery()
             ->getResult();
