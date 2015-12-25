@@ -13,7 +13,7 @@ class Pagination
         $this->router = $router;
     }
 
-    public function paginate($count, $routeName, $page, $limit, $padding = 4)
+    public function paginate($count, $routeName, $page, $limit, $params = [], $padding = 4)
     {
         $pagination = [];
 
@@ -33,25 +33,28 @@ class Pagination
         $end              = ($pagePlusPadding > $pageCount) ? $pageCount : $pagePlusPadding;
 
         if ($page > 1) {
+            $routeParams  = array_merge(['page' => $page - 1], $params);
             $pagination[] = [
                 'page'  => '&laquo;',
-                'url'   => $this->router->generate($routeName, ['page' => $page - 1]),
+                'url'   => $this->router->generate($routeName, $routeParams),
                 'class' => false,
             ];
         }
 
         for ($i = $start; $i <= $end; $i++) {
+            $routeParams  = array_merge(['page' => $i], $params);
             $pagination[] = [
                 'page'  => $i,
-                'url'   => $this->router->generate($routeName, ['page' => $i]),
+                'url'   => $this->router->generate($routeName, $routeParams),
                 'class' => ($i == $page) ? 'active' : false,
             ];
         }
 
         if ($page != $pageCount) {
+            $routeParams  = array_merge(['page' => $page + 1], $params);
             $pagination[] = [
                 'page'  => '&raquo;',
-                'url'   => ($page < $pageCount ? $this->router->generate($routeName, ['page' => $page + 1]) : '#'),
+                'url'   => ($page < $pageCount ? $this->router->generate($routeName, $routeParams) : '#'),
                 'class' => false,
             ];
         }

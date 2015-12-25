@@ -59,24 +59,27 @@ class WallpaperController extends Controller
 
     /**
      * @Route("/search", name="wallpaper_search")
+     * @Route("/search/page/{page}", requirements={"id" = "\d+"}, name="wallpaper_search_page")
      */
-    public function searchWallpaperAction(Request $request, $page = 1, $limit = 50)
+    public function searchWallpaperAction(Request $request, $page = 1, $limit = 10)
     {
         $wallpaperRepo = $this->get('app.bing_wallpaper_repository');
 
         $query      = $request->query->get('query');
         $offset     = ($page * $limit) - $limit;
-        $wallpapers = $wallpaperRepo->searchDescription($query, $offset, $limit);
+        $wallpapers = $wallpaperRepo->search($query, $offset, $limit);
+        $count      = $wallpaperRepo->countSearch($query);
 
         $paginator  = $this->get('app.pagination');
-        $pagination = $paginator->paginate(count($wallpapers), 'wallpaper_page', $page, $limit);
+        $pagination = $paginator->paginate($count, 'wallpaper_search_page', $page, $limit, ['query' => $query]);
 
         return $this->render('wallpaper/search.html.twig', [
+            'count'      => $count,
             'page'       => $page,
             'pagination' => $pagination,
             'path'       => self::PATH,
-            'wallpapers' => $wallpapers,
             'query'      => $query,
+            'wallpapers' => $wallpapers,
         ]);
     }
 
