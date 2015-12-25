@@ -10,7 +10,7 @@
 
     <div class="search-col">
         <form class="form-inline wallpaper-search-form" action="{{ path('wallpaper_search') }}">
-            <input name="query" type="search" value="{{ query }}" class="form-control" placeholder="Search wallpapers">
+            <input name="query" type="search" value="{{ query }}" class="form-control search-input" placeholder="Search wallpapers">
         </form>
     </div>
 
@@ -34,8 +34,10 @@
     <script>
         $(function() {
             $(".show-wallpaper-search").click(function() {
-                $(".wallpaper-search-form").toggle();
+                $(".wallpaper-search-form").slideToggle(function() {
+                    $(".search-input").focus();
+                });
             });
-        })
+        });
     </script>
 {% endblock %}
