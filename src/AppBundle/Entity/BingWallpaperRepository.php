@@ -30,7 +30,19 @@ class BingWallpaperRepository extends EntityRepository
         return $this->findBy(['market' => $market]);
     }
 
-    public function searchDescription($query, $offset = 0, $limit = 10)
+    public function countSearch($query)
+    {
+        $result = $this->createQueryBuilder('w')
+            ->select('count(w.id)')
+            ->where('w.description LIKE :description')
+            ->setParameter('description', '%'.$query.'%')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $result;
+    }
+
+    public function search($query, $offset = 0, $limit = 10)
     {
         $result = $this->createQueryBuilder('w')
             ->setFirstResult($offset)
