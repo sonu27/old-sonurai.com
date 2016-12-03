@@ -1,8 +1,0 @@
-dependencies:
-    pre:
-        - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
-    override:
-        - composer install --prefer-source --no-interaction
-test:
-    override:
-        - php vendor/bin/phpunit
