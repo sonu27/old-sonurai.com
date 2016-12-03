@@ -14,5 +14,4 @@ script:
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover clover.xml
-  - wget https://github.com/codacy/php-codacy-coverage/raw/master/bin/phar/codacycoverage.phar
-  - php codacycoverage.phar clover clover.xml
+  - php vendor/bin/codacycoverage clover clover.xml
