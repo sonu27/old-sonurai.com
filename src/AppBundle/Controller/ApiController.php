@@ -38,13 +38,13 @@ class ApiController extends Controller
     }
 
     /**
-     * @Route("/{id}", requirements={"id" = "\d+"}, name="wallpaper_show")
+     * @Route("/bingwallpapers/{id}", requirements={"id" = "\d+"}, name="wallpaper_show_json")
      * @ParamConverter("wallpaper", class="AppBundle:BingWallpaper")
      */
     public function showAction(\AppBundle\Entity\BingWallpaper $wallpaper)
     {
         return new JsonResponse([
-            'wallpapers' => $wallpaper,
+            'wallpaper' => $wallpaper,
         ]);
     }
 }
