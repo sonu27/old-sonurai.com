@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  *            indexes={@ORM\Index(name="index_all", columns={"date", "name", "description", "market"})})
  * @ORM\Entity(repositoryClass="AppBundle\Entity\BingWallpaperRepository")
  */
-class BingWallpaper
+class BingWallpaper implements \JsonSerializable
 {
     /**
      * @var integer
@@ -150,5 +150,16 @@ class BingWallpaper
     public function getId()
     {
         return $this->id;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id'     => $this->id,
+            'name'   => $this->name,
+            'desc'   => $this->description,
+            'date'   => $this->date,
+            'market' => $this->market,
+        ];
     }
 }
