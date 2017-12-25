@@ -2,7 +2,7 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
   <services>
-    <service id="app.bing_wallpaper" class="AppBundle\Service\BingWallpaper">
+    <service id="app.bing_wallpaper" class="AppBundle\Service\BingWallpaper" public="true">
       <argument type="service" id="app.bing_wallpaper_repository"/>
       <argument type="service" id="app.bing_market_repository"/>
     </service>
@@ -10,11 +10,11 @@
       <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
       <argument>AppBundle\Entity\BingMarket</argument>
     </service>
-    <service id="app.bing_wallpaper_repository" class="Doctrine\ORM\EntityRepository">
+    <service id="app.bing_wallpaper_repository" class="Doctrine\ORM\EntityRepository" public="true">
       <factory service="doctrine.orm.default_entity_manager" method="getRepository"/>
       <argument>AppBundle\Entity\BingWallpaper</argument>
     </service>
-    <service id="app.pagination" class="AppBundle\Service\Pagination">
+    <service id="app.pagination" class="AppBundle\Service\Pagination" public="true">
       <argument type="service" id="router"/>
     </service>
   </services>
