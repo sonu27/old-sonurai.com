@@ -50,116 +50,72 @@ class BingWallpaper implements \JsonSerializable
      */
     private $id;
 
-    /**
-     * Set date
-     *
-     * @param  integer       $date
-     * @return BingWallpaper
-     */
-    public function setDate($date)
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setDate(int $date): BingWallpaper
     {
         $this->date = $date;
 
         return $this;
     }
 
-    /**
-     * Get date
-     *
-     * @return integer
-     */
-    public function getDate()
+    public function getDate(): int
     {
         return $this->date;
     }
 
-    /**
-     * Set name
-     *
-     * @param  string        $name
-     * @return BingWallpaper
-     */
-    public function setName($name)
+    public function setName(string $name): BingWallpaper
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Set description
-     *
-     * @param  string        $description
-     * @return BingWallpaper
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): BingWallpaper
     {
         $this->description = $description;
 
         return $this;
     }
 
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * Set market
-     *
-     * @param  string        $market
-     * @return BingWallpaper
-     */
-    public function setMarket($market)
+    public function setMarket(string $market): BingWallpaper
     {
         $this->market = $market;
 
         return $this;
     }
 
-    /**
-     * Get market
-     *
-     * @return string
-     */
-    public function getMarket()
+    public function getMarket(): string
     {
         return $this->market;
     }
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function jsonSerialize(): array
     {
-        return $this->id;
-    }
+        $copyright = trim(str_replace(')', '', explode('(', $this->description)[1]));
+        $title     = trim(explode('(', $this->description)[0]);
 
-    public function jsonSerialize()
-    {
         return [
-            'id'     => $this->id,
-            'name'   => $this->name,
-            'desc'   => $this->description,
-            'date'   => $this->date,
-            'market' => $this->market,
+            'id'        => $this->id,
+            'name'      => $this->name,
+            'desc'      => $title,
+            'copyright' => $copyright,
+            'date'      => $this->date,
+            'market'    => $this->market,
         ];
     }
 }
