@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% set searching = false %}
+
+{% if query is defined %}
+    {% set searching = true %}
+{% endif %}
+
+
+{% block title %}Bing Wallpapers - Page {{ page }}{% endblock %}
+
+{% block body %}
+    <header class="row">
+        <div class="col-10"><h1 id="page-title">Bing Wallpapers</h1></div>
+        <div class="col-2 right"><a class="show-wallpaper-search" href="#"><i class="fas fa-search"></i></a></div>
+    </header>
+
+    <div class="search-col">
+        <form class="wallpaper-search-form" action="{{ path('wallpapers_search') }}" {% if not searching %}style="display: none;"{% endif %}">
+            <input name="query" type="search" value="{% if searching %}{{ query }}{% endif %}" class="form-control search-input" placeholder="Search wallpapers">
+        </form>
+    </div>
+
+    {% if searching %}
+        <p>Found {{ count }} result(s) for "{{ query }}".</p>
+    {% endif %}
+
+    {% for wallpaper in wallpapers %}
+        <article class="post">
+            <p><a href="{{ path('wallpapers_id', {'id': wallpaper.id}) }}"><img src="{{ path }}{{ wallpaper.name }}_th.jpg" alt="{{ wallpaper.description }}" class="img-fluid"></a></p>
+            <p>{{ wallpaper.description }}</p>
+        </article>
+    {% endfor %}
+
+    <ul class="pagination">
+        {% for page in pagination %}
+            <li class="page-item {% if page.class is not null %}{{ page.class }}{% endif %}">
+                <a class="page-link" href="{{ page.url }}">{{ page.page|raw }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function() {
+            $(".show-wallpaper-search").click(function() {
+                $(".wallpaper-search-form").slideToggle(function() {
+                    $(".search-input").focus();
+                });
+            });
+        });
+    </script>
+{% endblock %}

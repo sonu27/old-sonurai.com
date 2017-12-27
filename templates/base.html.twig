@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <title>{% block title %}{% endblock %} - Sonu Rai</title>
+    <meta name="twitter:site" content="@sonu27">
+    <meta name="twitter:creator" content="@sonu27">
+    {% block meta %}{% endblock %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-md" id="top" role="navigation">
+    <div class="container">
+        <a class="navbar-brand" href="{{ path('home') }}" id="brand">Sonu Rai</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link {% if app.request.get('_route') == 'home' %}active{% endif %}" href="{{ path('home') }}">Home</a>
+                <a class="nav-item nav-link {% if app.request.get('_route') == 'about' %}active{% endif %}" href="{{ path('about') }}">About</a>
+                <a class="nav-item nav-link {% if app.request.get('_route') == 'contact' %}active{% endif %}" href="{{ path('contact') }}">Contact</a>
+                <a class="nav-item nav-link" href="http://blog.sonurai.com/">Blog</a></li>
+            </div>
+        </div>
+    </div>
+</nav>
+<div id="main">
+    <div id="content" class="container">{% block body %}{% endblock %}</div>
+</div>
+<footer class="container">
+    <p>&copy; {{ date()|date('Y') }} Amarjeet Rai</p>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+{#<script src="{{ asset('bundles/app/js/main.js') }}"></script>#}
+{% block javascripts %}{% endblock %}
+{% if app.environment == 'prod' %}
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-83506-8', 'sonurai.com');
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
+    </script>
+{% endif %}
+</body>
+</html>

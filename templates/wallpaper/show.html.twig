@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ wallpaper.description }} - Bing Wallpapers{% endblock %}
+
+{% block meta %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:title" content="{{ wallpaper.description }} - Bing Wallpapers - Sonu Rai">
+    <meta property="og:image" content="https://sonurai.com{{ path }}{{ wallpaper.name }}_th.jpg">
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" async defer data-pin-height="28" data-pin-hover="true" src="//assets.pinterest.com/js/pinit.js"></script>
+{% endblock %}
+
+{% block body %}
+    <h1 id="page-title">{{ wallpaper.description }}</h1>
+
+    <article class="post">
+        <a href="{{ path }}{{ wallpaper.name }}.jpg"><img src="{{ path }}{{ wallpaper.name }}.jpg" alt="{{ wallpaper.description }}" class="img-fluid"></a>
+        <p>{{ date|date('d M Y') }}</p>
+    </article>
+{% endblock %}
