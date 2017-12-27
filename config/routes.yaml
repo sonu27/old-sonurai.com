@@ -50,19 +50,19 @@ wallpapers_update:
     controller: 'App\Controller\WallpaperController::update'
 
 api_wallpapers_index:
-    path: /bingwallpapers
+    path: /api/bingwallpapers
     methods: [ GET ]
     controller: 'App\Controller\ApiController::index'
 
 api_wallpapers_index_page:
-    path: /bingwallpapers/page/{page}
+    path: /api/bingwallpapers/page/{page}
     methods: [ GET ]
     controller: 'App\Controller\ApiController::index'
     requirements:
         page: '\d+'
 
 api_wallpaper_id:
-    path: /bingwallpapers/{id}
+    path: /api/bingwallpapers/{id}
     methods: [ GET ]
     controller: 'App\Controller\ApiController::id'
     requirements:
@@ -73,10 +73,3 @@ api_wallpaper_id:
 #    methods: [ GET ]
 #    controller: 'App\Controller\ApiController::vision'
 
-# must be last
-#app.remove_trailing_slash:
-#    path: /{url}
-#    controller: AppBundle:Redirecting:removeTrailingSlash
-#    requirements:
-#        url: .*/$
-#    methods: [ GET ]
