@@ -1,0 +1,82 @@
+home:
+    path: /
+    methods: [ GET ]
+    controller: 'App\Controller\SiteController::home'
+
+about:
+    path: /about
+    methods: [ GET ]
+    controller: 'App\Controller\SiteController::about'
+
+contact:
+    path: /contact
+    methods: [ GET ]
+    controller: 'App\Controller\SiteController::contact'
+
+wallpapers_index:
+    path: /bingwallpapers
+    methods: [ GET ]
+    controller: 'App\Controller\WallpaperController::index'
+
+wallpapers_index_page:
+    path: /bingwallpapers/page/{page}
+    methods: [ GET ]
+    controller: 'App\Controller\WallpaperController::index'
+    requirements:
+        page: '\d+'
+
+wallpapers_id:
+    path: /bingwallpapers/{id}
+    methods: [ GET ]
+    controller: 'App\Controller\WallpaperController::id'
+    requirements:
+        id: '\d+'
+
+wallpapers_search:
+    path: /bingwallpapers/search
+    methods: [ GET ]
+    controller: 'App\Controller\WallpaperController::search'
+
+wallpapers_search_page:
+    path: /bingwallpapers/search/page/{page}
+    methods: [ GET ]
+    controller: 'App\Controller\WallpaperController::search'
+    requirements:
+        page: '\d+'
+
+wallpapers_update:
+    path: /bingwallpapers/update
+    methods: [ GET ]
+    controller: 'App\Controller\WallpaperController::update'
+
+api_wallpapers_index:
+    path: /bingwallpapers
+    methods: [ GET ]
+    controller: 'App\Controller\ApiController::index'
+
+api_wallpapers_index_page:
+    path: /bingwallpapers/page/{page}
+    methods: [ GET ]
+    controller: 'App\Controller\ApiController::index'
+    requirements:
+        page: '\d+'
+
+api_wallpaper_id:
+    path: /bingwallpapers/{id}
+    methods: [ GET ]
+    controller: 'App\Controller\ApiController::id'
+    requirements:
+        id: '\d+'
+
+#vision:
+#    path: /v
+#    methods: [ GET ]
+#    controller: 'App\Controller\ApiController::vision'
+
+# must be last
+#app.remove_trailing_slash:
+#    path: /{url}
+#    controller: AppBundle:Redirecting:removeTrailingSlash
+#    requirements:
+#        url: .*/$
+#    methods: [ GET ]

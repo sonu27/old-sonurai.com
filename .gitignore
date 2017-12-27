@@ -1,14 +1,18 @@
-/var/bootstrap.php.cache
-/var/cache/*
-!var/cache/.gitkeep
-/app/config/parameters.yml
-/var/logs/*
-!var/logs/.gitkeep
-/app/phpunit.xml
-/bin/
-/composer.phar
-/src/AppBundle/Resources/public/wallpaper/
-/vendor/
-/web/bundles/
 /.idea/
-/var/SymfonyRequirements.php
+/public/wallpaper/
+
+###> symfony/framework-bundle ###
+.env
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/web-server-bundle ###
+.web-server-pid
+###< symfony/web-server-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###
