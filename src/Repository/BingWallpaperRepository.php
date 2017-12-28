@@ -21,7 +21,13 @@ class BingWallpaperRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
-    public function get($offset = 0, $limit = 10)
+    /**
+     * @param int $offset
+     * @param int $limit
+     *
+     * @return BingWallpaper[]
+     */
+    public function get(int $offset = 0, int $limit = 10): array
     {
         $qb = $this->_em->createQueryBuilder();
         $qb
