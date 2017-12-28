@@ -20,11 +20,6 @@ class ApiController
     {
         $offset     = ($page * $limit) - $limit;
         $wallpapers = $this->wallpaperRepo->get($offset, $limit);
-        $count      = $this->wallpaperRepo->countAll();
-
-        if (\count($wallpapers) === 0) {
-            throw new NotFoundHttpException('No wallpapers found');
-        }
 
         return new JsonResponse([
             'wallpapers' => $wallpapers,

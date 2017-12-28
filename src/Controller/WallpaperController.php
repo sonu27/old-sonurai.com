@@ -29,10 +29,6 @@ class WallpaperController extends Controller
         $wallpapers = $this->wallpaperRepo->get($offset, $limit);
         $count      = $this->wallpaperRepo->countAll();
 
-        if (\count($wallpapers) === 0) {
-            throw new NotFoundHttpException('No wallpapers found');
-        }
-
         $pagination = $this->pagination->paginate($count, 'wallpapers_index_page', $page, $limit);
 
         return $this->render('wallpaper/index.html.twig', [
