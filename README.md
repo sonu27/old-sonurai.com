@@ -6,12 +6,9 @@
 ![License](https://img.shields.io/github/license/sonu27/sonurai.com.svg)
 
 ### Install instructions after clone
+Replace `[HTTPDUSER]` user with your web server user. E.g. nginx, apache, www-data
 ```
-HTTPDUSER=$(grep -E ^'apache|httpd|[_]www|www-data|nginx' /etc/passwd | cut -d":" -f1)
-chown "$HTTPDUSER":"$HTTPDUSER" var/cache var/logs src/AppBundle/Resources/public/wallpaper -R
-setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/logs
-setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX var/cache var/logs
-composer install --prefer-dist -o
-php bin/console cache:clear --env=prod --no-debug
-ln -s ../src/AppBundle/Resources/public/wallpaper web/wallpaper
+chown [HTTPDUSER]:[HTTPDUSER] ./var/cache ./var/logs ./public/wallpaper -R
+composer install --prefer-dist --no-dev -a
+rm -rf ./var/cache/*
 ```
