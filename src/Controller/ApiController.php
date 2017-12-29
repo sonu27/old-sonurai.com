@@ -39,49 +39,4 @@ class ApiController
             'wallpaper' => $wallpaper,
         ]);
     }
-
-    public function vision()
-    {
-        $client = new \GuzzleHttp\Client();
-
-        $results = [];
-
-        $wallpapers = $this->wallpaperRepo->get(0, 5);
-
-        /** @var BingWallpaper $wallpaper */
-        foreach ($wallpapers as $wallpaper) {
-            $fileName = 'http://sonurai.com/wallpaper/'.$wallpaper->getName().'.jpg';
-
-            $url = 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyB_2cI_2XHtQyOhfU-zqPPFD49DNHv-FwQ';
-            $res = $client->request('POST', $url, ['json' => [
-                'requests' => [
-                    [
-                        'image'    => [
-                            'source' => [
-                                'imageUri' => $fileName,
-                            ],
-                        ],
-                        'features' => [
-                            [
-                                'type' => 'LABEL_DETECTION',
-                            ],
-                            [
-                                'type' => 'IMAGE_PROPERTIES',
-                            ],
-                        ],
-                    ],
-                ],
-            ]]);
-
-            $content   = (string)$res->getBody();
-            $content   = json_decode($content, true);
-            $content   = $content['responses'];
-            $results[] = $content;
-
-            $wallpaper->setData($content);
-            $this->wallpaperRepo->save($wallpaper);
-        }
-
-        return new JsonResponse($results);
-    }
 }
