@@ -68,8 +68,3 @@ api_wallpaper_id:
     requirements:
         id: '\d+'
 
-#vision:
-#    path: /v
-#    methods: [ GET ]
-#    controller: 'App\Controller\ApiController::vision'
-
