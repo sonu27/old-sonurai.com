@@ -142,6 +142,27 @@ class BingWallpaper implements \JsonSerializable
         return $tags;
     }
 
+    public function getColours(): array
+    {
+        $colours = [];
+
+        if (empty($this->data)) {
+            return $colours;
+        }
+
+        $data = $this->data[0];
+
+        if (isset($data['imagePropertiesAnnotation']['dominantColors'])) {
+            $cs = $data['imagePropertiesAnnotation']['dominantColors']['colors'];
+            foreach ($cs as $colour) {
+                $c = $colour['color'];
+                $colours[] = sprintf('#%02x%02x%02x', $c['red'], $c['green'], $c['blue']);
+            }
+        }
+
+        return $colours;
+    }
+
     public function jsonSerialize(): array
     {
         $copyright = trim(str_replace(')', '', explode('(', $this->description)[1]));
