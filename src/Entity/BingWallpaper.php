@@ -123,6 +123,25 @@ class BingWallpaper implements \JsonSerializable
         return $this->data;
     }
 
+    public function getTags(): array
+    {
+        $tags = [];
+
+        if (empty($this->data)) {
+            return $tags;
+        }
+
+        $data = $this->data[0];
+
+        if (isset($data['labelAnnotations'])) {
+            foreach ($data['labelAnnotations'] as $label) {
+                $tags[] = $label['description'];
+            }
+        }
+
+        return $tags;
+    }
+
     public function jsonSerialize(): array
     {
         $copyright = trim(str_replace(')', '', explode('(', $this->description)[1]));
