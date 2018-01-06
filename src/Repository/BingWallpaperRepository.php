@@ -101,10 +101,17 @@ class BingWallpaperRepository extends ServiceEntityRepository
      */
     public function findByEmptyData(): array
     {
-        return $this->createQueryBuilder('w')
-            ->where('w.data = JSON_ARRAY()')
-            ->getQuery()
-            ->getResult();
+        $wallpapers = [];
+
+        $rows =  $this->_em->getConnection()->fetchAll(
+            'SELECT id FROM bing_wallpaper WHERE data = JSON_ARRAY()'
+        );
+
+        foreach ($rows as $row) {
+            $wallpapers[] = $this->find((int) $row['id']);
+        }
+
+        return $wallpapers;
     }
 
     public function save(BingWallpaper $wallpaper)

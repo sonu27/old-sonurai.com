@@ -44,7 +44,7 @@ class BingWallpaper implements \JsonSerializable
     /**
      * @var array
      *
-     * @ORM\Column(name="data", type="json", nullable=true)
+     * @ORM\Column(name="data", type="json", nullable=false)
      */
     private $data = [];
 
