@@ -27,23 +27,15 @@ class AppVisionCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Runs Google Vision on wallpapers')
-            ->addArgument('offset', InputArgument::OPTIONAL, 'Offset')
-            ->addArgument('limit', InputArgument::OPTIONAL, 'Limit');
+            ->setDescription('Runs Google Vision on wallpapers which do not have this data')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
 
-        if ($input->hasArgument('offset') && $input->hasArgument('limit')) {
-            $offset = (int)$input->getArgument('offset');
-            $limit  = (int)$input->getArgument('limit');
-
-            $wallpapers = $this->wallpaperRepo->get($offset, $limit);
-        } else {
-            $wallpapers = $this->wallpaperRepo->findByEmptyData();
-        }
+        $wallpapers = $this->wallpaperRepo->findByEmptyData();
 
         $results = [];
 
@@ -80,7 +72,7 @@ class AppVisionCommand extends Command
             ],
         ]]);
 
-        $content = (string)$res->getBody();
+        $content = (string) $res->getBody();
         $content = json_decode($content, true);
         $content = $content['responses'];
 
