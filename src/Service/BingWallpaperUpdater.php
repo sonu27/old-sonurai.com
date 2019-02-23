@@ -116,12 +116,6 @@ class BingWallpaperUpdater
         $json = file_get_contents($url);
         $images = (\json_decode($json))->images;
 
-
-//        $images = [];
-//        foreach ($xml->image as $item) {
-//            $images[] = $item;
-//        }
-
         return array_reverse($images);
     }
 
