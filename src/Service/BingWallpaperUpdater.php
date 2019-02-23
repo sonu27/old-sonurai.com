@@ -98,7 +98,10 @@ class BingWallpaperUpdater
 
     public function getNameFromUrlBase($url)
     {
-        return str_replace('/az/hprichbg/rb/', '', $url);
+        $name = str_replace('/az/hprichbg/rb/', '', $url);
+        $name = str_replace('/th?id=OHR.', '', $name);
+
+        return $name;
     }
 
     private function getAllChinaTitles()
