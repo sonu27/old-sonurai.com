@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WallpaperController extends Controller
 {
-    private const PATH = '/wallpaper/';
+    private const PATH = 'https://images.sonurai.com/';
 
     private $wallpaperRepo;
     private $pagination;

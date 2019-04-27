@@ -155,7 +155,7 @@ class BingWallpaper implements \JsonSerializable
         if (isset($data['imagePropertiesAnnotation']['dominantColors'])) {
             $cs = $data['imagePropertiesAnnotation']['dominantColors']['colors'];
             foreach ($cs as $colour) {
-                $c = $colour['color'];
+                $c         = $colour['color'];
                 $colours[] = sprintf('#%02x%02x%02x', $c['red'], $c['green'], $c['blue']);
             }
         }
