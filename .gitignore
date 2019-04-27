@@ -1,4 +1,5 @@
 /.idea/
+/public/wallpaper
 
 ###> symfony/framework-bundle ###
 /.env.local
