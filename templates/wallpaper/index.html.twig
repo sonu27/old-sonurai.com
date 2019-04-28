@@ -6,8 +6,7 @@
     {% set searching = true %}
 {% endif %}
 
-
-{% block title %}Bing Wallpapers - Page {{ page }}{% endblock %}
+{% set title = 'Bing Wallpapers - Page ' ~  page %}
 
 {% block body %}
     <header class="row">
