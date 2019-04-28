@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ wallpaper.description }} - Bing Wallpapers{% endblock %}
+{% set title = wallpaper.description ~ ' - Bing Wallpapers' %}
 
 {% block meta %}
-    <meta name="twitter:card" content="summary_large_image">
-    <meta property="og:title" content="{{ wallpaper.description }} - Bing Wallpapers - Sonu Rai">
-    <meta property="og:image" content="https://sonurai.com{{ path }}{{ wallpaper.name }}_th.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ path }}{{ wallpaper.name }}_th.jpg">
+<meta property="og:image" content="{{ path }}{{ wallpaper.name }}_th.jpg">
 {% endblock %}
 
 {% block javascripts %}
