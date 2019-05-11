@@ -157,9 +157,9 @@ class BingWallpaperUpdater
         //if request did not fail
         if ($result !== false) {
             //if request was ok, check response code
-            $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $statusCode = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
 
-            if ($statusCode == 200) {
+            if ($statusCode === 200) {
                 $fileExists = true;
             }
         }
@@ -175,7 +175,7 @@ class BingWallpaperUpdater
 
         foreach ($chinaWallpapers as $chinaWallpaper) {
             $cleanTitle = $this->cleanTitle($chinaWallpaper->getName());
-            if ($cleanTitle == $name) {
+            if ($cleanTitle === $name) {
                 return $chinaWallpaper;
             }
         }
