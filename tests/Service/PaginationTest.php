@@ -12,7 +12,7 @@ class PaginationTest extends TestCase
     protected $obj;
     protected $routeName = 'fake_route';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $routerProphecy = $this->prophesize();
         $routerProphecy->willExtend('stdClass');
@@ -29,11 +29,9 @@ class PaginationTest extends TestCase
         $this->assertEquals([], $pagination);
     }
 
-    /**
-     * @expectedException \LogicException
-     */
     public function testLogicExceptionIsThrownWhenPageCannotExist()
     {
+        $this->expectException(\LogicException::class);
         $pagination = $this->obj->paginate(10, $this->routeName, 3, 5);
 
         $this->assertEquals([], $pagination);

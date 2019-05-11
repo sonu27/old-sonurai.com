@@ -4,7 +4,7 @@
     "type": "project",
     "description": "sonurai.com",
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-iconv": "*",
@@ -18,9 +18,11 @@
         "symfony/framework-bundle": "4.2.*",
         "symfony/maker-bundle": "^1.11",
         "symfony/orm-pack": "^1.0",
-        "symfony/phpunit-bridge": "4.2.*",
         "symfony/twig-bundle": "4.2.*",
         "symfony/yaml": "4.2.*"
+    },
+    "require-dev": {
+        "symfony/test-pack": "^1.0"
     },
     "config": {
         "preferred-install": {

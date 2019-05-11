@@ -11,7 +11,7 @@ class BingWallpaperUpdaterTest extends TestCase
     protected $obj;
     protected $routeName = 'fake_route';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $wallpaperRepoProphecy = $this->prophesize(BingWallpaperRepository::class);
 
