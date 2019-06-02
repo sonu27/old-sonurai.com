@@ -89,11 +89,20 @@ class BingWallpaperRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('w')
             ->where('w.name LIKE :name')
-            ->andWhere("w.market = :market")
+            ->andWhere('w.market = :market')
             ->setParameter('name', $name.'%')
             ->setParameter('market', $market)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param string $nameId
+     * @return BingWallpaper|null
+     */
+    public function findOneByNameId(string $nameId)
+    {
+        return $this->findOneBy(['nameId' => $nameId]);
     }
 
     /**
