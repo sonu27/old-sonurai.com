@@ -49,6 +49,13 @@ class BingWallpaper implements \JsonSerializable
     private $data = [];
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="name_id", type="string", length=255, nullable=true)
+     */
+    private $nameId;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -79,12 +86,19 @@ class BingWallpaper implements \JsonSerializable
     {
         $this->name = $name;
 
+        $this->nameId = trim(explode('_', $name)[0]);
+
         return $this;
     }
 
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getNameId(): ?string
+    {
+        return $this->nameId;
     }
 
     public function setDescription(string $description): BingWallpaper

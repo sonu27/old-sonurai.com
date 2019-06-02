@@ -9,6 +9,12 @@ class BingWallpaperUpdater
 {
     private const CHINA_MARKET = 'zh-cn';
     private const BING_URL     = 'http://www.bing.com';
+    private const MARKETS      = [
+        'en-ww',
+        'en-gb',
+        'en-us',
+        'zh-cn',
+    ];
 
     private $wallpaperRepo;
 
@@ -19,49 +25,43 @@ class BingWallpaperUpdater
 
     public function updateWallpapers(string $path): array
     {
-        $saved   = [];
-        $markets = [
-            'en-ww',
-            'en-gb',
-            'en-us',
-            'zh-cn',
-        ];
+        $saved = [];
 
-        foreach ($markets as $market) {
-            $titles          = $this->getAllTitles();
-            $chinaWallpapers = $this->getAllChinaTitles();
-            $images          = $this->getImages($market);
-
-            foreach ($images as $image) {
-                $cleanTitle = $this->cleanTitle($image->urlbase);
-                $cleanName  = $this->getNameFromUrlBase($image->urlbase);
-                $filename   = $path.$cleanName;
-
-                if (// It's not a china wallpaper but exists in the db as a china wallpaper
-                    $market !== self::CHINA_MARKET
-                    && \in_array($cleanTitle, $chinaWallpapers, true)
-                    && $this->imagesExist($image)
-                ) {
-                    $chinaWallpaper = $this->getChina($cleanTitle);
-                    if ($chinaWallpaper !== false) {
-                        if ($this->copyImages($image, $filename)) {
-                            $this->saveWallpaper($market, $image, $chinaWallpaper);
-                            $saved[] = $chinaWallpaper->getName().' - '.$chinaWallpaper->getMarket();
-                        }
-                    }
-                } elseif (
-                    !\in_array($cleanTitle, $titles, true)
-                    && $this->imagesExist($image)
-                ) {
-                    if ($this->copyImages($image, $filename)) {
-                        $wallpaper = $this->saveWallpaper($market, $image);
-                        $saved[]   = $wallpaper->getName().' - '.$wallpaper->getMarket();
-                    }
-                }
-            }
+        foreach (self::MARKETS as $market) {
+            $this->updateForMarket($market, $path, $saved);
         }
 
         return $saved;
+    }
+
+    private function updateForMarket(string $market, string $path, array &$saved)
+    {
+        $images = $this->getImages($market);
+
+        foreach ($images as $image) {
+            if (!$this->imagesExist($image)) {
+                continue;
+            }
+
+            $nameId    = $this->cleanTitle($image->urlbase);
+            $wallpaper = $this->wallpaperRepo->findOneByNameId($nameId);
+
+            $cleanName = $this->getNameFromUrlBase($image->urlbase);
+            $filename  = $path.$cleanName;
+
+            if ($wallpaper !== null) {
+                // It's not a china wallpaper but exists in the db as a china wallpaper
+                if ($market !== self::CHINA_MARKET && $wallpaper->getMarket() === self::CHINA_MARKET) {
+                    if ($this->copyImages($image, $filename)) {
+                        $this->saveWallpaper($market, $image, $wallpaper);
+                        $saved[] = $wallpaper->getName().' - '.$wallpaper->getMarket();
+                    }
+                }
+            } elseif ($this->copyImages($image, $filename)) {
+                $wallpaper = $this->saveWallpaper($market, $image);
+                $saved[]   = $wallpaper->getName().' - '.$wallpaper->getMarket();
+            }
+        }
     }
 
     public function cleanTitle($url)
@@ -81,40 +81,21 @@ class BingWallpaperUpdater
         return ($fullCopied && $thumbnailCopied);
     }
 
-    private function getAllTitles()
-    {
-        return $this->getNames($this->wallpaperRepo->findAll());
-    }
-
-    private function getNames(array $wallpapers)
-    {
-        $names = [];
-        foreach ($wallpapers as $wallpaper) {
-            $names[] = $this->cleanTitle($wallpaper->getName());
-        }
-
-        return $names;
-    }
-
     public function getNameFromUrlBase($url)
     {
-        $name = str_replace('/az/hprichbg/rb/', '', $url);
-        $name = str_replace('/th?id=OHR.', '', $name);
+        $replacements = [
+            '/az/hprichbg/rb/',
+            '/th?id=OHR.',
+        ];
 
-        return $name;
-    }
-
-    private function getAllChinaTitles()
-    {
-        return $this->getNames($this->wallpaperRepo->findByMarket('zh-cn'));
+        return str_replace($replacements, '', $url);
     }
 
     public function getImages($market)
     {
-        $url = self::BING_URL.'/HPImageArchive.aspx?format=js&idx=0&n=10&mkt='.$market;
-
-        $json = file_get_contents($url);
-        $images = (\json_decode($json))->images;
+        $url    = self::BING_URL.'/HPImageArchive.aspx?format=js&idx=0&n=10&mkt='.$market;
+        $json   = file_get_contents($url);
+        $images = json_decode($json, false)->images;
 
         return array_reverse($images);
     }
@@ -167,20 +148,6 @@ class BingWallpaperUpdater
         curl_close($curl);
 
         return $fileExists;
-    }
-
-    private function getChina($name)
-    {
-        $chinaWallpapers = $this->wallpaperRepo->findByNameAndMarket($name, self::CHINA_MARKET);
-
-        foreach ($chinaWallpapers as $chinaWallpaper) {
-            $cleanTitle = $this->cleanTitle($chinaWallpaper->getName());
-            if ($cleanTitle === $name) {
-                return $chinaWallpaper;
-            }
-        }
-
-        return false;
     }
 
     private function saveWallpaper(string $market, $image, BingWallpaper $wallpaper = null): BingWallpaper
