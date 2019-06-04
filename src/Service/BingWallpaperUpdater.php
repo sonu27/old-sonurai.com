@@ -7,13 +7,17 @@ use App\Repository\BingWallpaperRepository;
 
 class BingWallpaperUpdater
 {
-    private const CHINA_MARKET = 'zh-cn';
-    private const BING_URL     = 'http://www.bing.com';
-    private const MARKETS      = [
+    private const BING_URL       = 'http://www.bing.com';
+    private const NON_EN_MARKETS = [
+        'zh-cn',
+        'ja-JP',
+    ];
+    private const MARKETS        = [
         'en-ww',
         'en-gb',
         'en-us',
         'zh-cn',
+        'ja-JP',
     ];
 
     private $wallpaperRepo;
@@ -50,8 +54,9 @@ class BingWallpaperUpdater
             $filename  = $path.$cleanName;
 
             if ($wallpaper !== null) {
-                // It's not a china wallpaper but exists in the db as a china wallpaper
-                if ($market !== self::CHINA_MARKET && $wallpaper->getMarket() === self::CHINA_MARKET) {
+                // It is an English wallpaper but exists in the DB as a non English wallpaper
+                if (!in_array($market, self::NON_EN_MARKETS, true)
+                    && in_array($wallpaper->getMarket(), self::NON_EN_MARKETS, true)) {
                     if ($this->copyImages($image, $filename)) {
                         $this->saveWallpaper($market, $image, $wallpaper);
                         $saved[] = $wallpaper->getName().' - '.$wallpaper->getMarket();
