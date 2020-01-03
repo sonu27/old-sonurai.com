@@ -7,8 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * BingWallpaper
  *
- * @ORM\Table(name="bing_wallpaper",
- *            indexes={@ORM\Index(name="index_all", columns={"date", "name", "description", "market"})})
+ * @ORM\Table(
+ *     name="bing_wallpaper",
+ *     indexes={
+ *         @ORM\Index(name="name_id", columns={"name_id"}),
+ *         @ORM\Index(name="name", columns={"name"}),
+ *         @ORM\Index(name="description", columns={"description"}),
+ *         @ORM\Index(name="market", columns={"market"}),
+ * })
  * @ORM\Entity(repositoryClass="App\Repository\BingWallpaperRepository")
  */
 class BingWallpaper implements \JsonSerializable
